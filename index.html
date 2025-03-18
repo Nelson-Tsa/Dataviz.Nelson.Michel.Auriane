@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Recherche Code INSEE</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+
+</head>
+<body>
+    <div class="autocomplete">
+        <input type="text" 
+               id="cityInput" 
+               placeholder="Départ"
+               autocomplete="off">
+        <div id="loading">Recherche en cours...</div>
+        <div id="results"></div>
+    </div>
+    <div class="autocomplete2">
+        <input type="text" id="villeArriver" placeholder="Arrivée" autocomplete="off">
+        <div id="loading2">Recherche en cours...</div>
+        <div id="results2"></div>
+    </div>
+
+<div id="form">
+    <div id="date">
+        <label for="dateForm">Date départ</label>
+        <input type="date" id="date">
+        
+    </div>
+    <div id="time">
+        <label for="timeForm">Heure départ</label>
+        <input type="time" id="time">
+    </div>
+    <div id="Recherche">
+    <button id="rechercheDepart">Rechercher</button>
+    </div>
+</div>
+    
+
+    <section id="Trajet">
+        <div>
+            <h2>Itinéraire</h2>
+            <div id="itineraire"></div>
+            <div id="itineraire2"></div>
+            <h2>Transport utilisé</h2>
+            <div id="transport"></div>
+            <h2>Heure départ</h2>
+            <div id="heureDepart"></div>
+            <h2>Heure arrivée</h2>
+            <div id="heureArriver"></div>
+            <h2>Duree</h2>
+            <div id="duree"></div>
+            <h2>Temps de marche</h2>
+            <div id="tempsMarche"></div>
+        </div>
+    </section>
+
+    
+</body>
+</html>
