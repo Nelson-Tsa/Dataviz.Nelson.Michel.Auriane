@@ -7,19 +7,14 @@ const loadingDiv2 = document.getElementById('loading2');
 const date = document.getElementById('date');
 const heureDepart = document.getElementById('time');
 const boutonRecherche = document.getElementById('rechercheDepart');
-const boutonRecherche2 = document.getElementById('RechercheArrivee');
-const date2 = document.getElementById('date2');
-const heureArriver = document.getElementById('time2');
 
+// const ligneItineraire = document.querySelector('.itineraire');  
 
 let codeInseeArriver 
 let codeInseeDepart 
 let dateDepart 
 let timeoutId;
 let timeStart
-
-let dateArriver
-let timeEnd
 
 //---------------------Ville Depart---------------------
 
@@ -56,7 +51,6 @@ async function searchCity(query) {
         }
 
         // Affiche les résultats
-        resultsDiv.style.display = 'block';
         resultsDiv.innerHTML = cities.map(city => `
             <div class="result-item" 
                  data-code="${city.code}"
@@ -72,7 +66,6 @@ async function searchCity(query) {
                 resultsDiv.innerHTML = `${item.dataset.code}`;
                 codeInseeDepart = `admin:fr:${item.dataset.code}`;
                 console.log(codeInseeDepart)
-                resultsDiv.style.display = 'none';
                 return codeInseeDepart
                 //alert(`Code INSEE sélectionné : ${item.dataset.code}`);
             });
@@ -121,7 +114,6 @@ async function searchCityArriver(villeData) {
         }
 
         // Affiche les résultats
-        resultsDiv2.style.display = 'block';
         resultsDiv2.innerHTML = cities2.map(city => `
             <div class="result2-item" 
                  data-code="${city.code}"
@@ -138,7 +130,6 @@ async function searchCityArriver(villeData) {
                 resultsDiv2.innerHTML = `${item2.dataset.code}`;
             
                 codeInseeArriver = `admin:fr:${item2.dataset.code}`
-                resultsDiv2.style.display = 'none';
                 console.log(codeInseeArriver)
                 return codeInseeArriver
                 
@@ -159,7 +150,7 @@ async function searchCityArriver(villeData) {
 
 
 
-//-----------------------Fonction API départ a partir d'une heure----------------------
+//-----------------------Fonction API----------------------
 
 date.addEventListener('input', (e) => {
    const dateDepartChoix = e.target.value.split('-').join('').trim();
@@ -203,7 +194,10 @@ async function searchJourneys() {
                 
                 let departureTime = formatTime(itinerary[i].departure_date_time)
                 let arrivalTime = formatTime(itinerary[i].arrival_date_time)
-    
+
+                ligneItineraire.innerHTML = ``
+                ligneItineraire.innerHTML = `${departureTime} > ${arrivalTime} `
+
                 switch (ITINERARY_TYPE) {
                     
                     case "public_transport":
@@ -255,53 +249,3 @@ function formatTime(dateArray) {
     return `${hours}:${minutes}`;
 }
 
-
-
-// -----------------------Fonction API arrivée a partir d'une heure----------------------
-
-const apiKey2 = 'f3a26e07-0df5-48e8-b17a-b9d05b5a820a'
-async function searchJourneys2() {
-    try {
-        const apiArriver = `
-https://api.sncf.com/v1/coverage/sncf/journeys?to=${codeInseeArriver}&from=${codeInseeDepart}&datetime_represents=arrival&datetime=${dateArriver}T${timeEnd}&`
-        const response2 = await fetch(apiArriver, { headers: { Authorization: apiKey2 }
-    });
-        const data2 = await response2.json();
-        console.log(data2);
-    } catch (error) {
-        console.error(error);
-    }
-}
-
-// sortir du format "YYYYMMDDTHHMMSS" l'information heure en HH:MM
-
-function formatTime(dateArray) {
-    
-    const selectTime = dateArray.split('T')[1];
-    
-    
-    const hours = selectTime.slice(0, 2);
-    const minutes = selectTime.slice(2, 4);
-    
-    
-    return `${hours}:${minutes}`;
-}
-
-
-
-date2.addEventListener('input', (e) => {
-    const dateArriverChoix = e.target.value.split('-').join('').trim();
-    dateArriver = dateArriverChoix
-     console.log(dateArriver)
- });
- 
- time2.addEventListener('input', (e) => {
-     const heureArriverChoix = e.target.value.split(':').join('').trim();
-     timeEnd = `${heureArriverChoix}00`
-     console.log(timeEnd)
- })
-
-
- boutonRecherche2.addEventListener('click', () => {
-     searchJourneys2()
- })
