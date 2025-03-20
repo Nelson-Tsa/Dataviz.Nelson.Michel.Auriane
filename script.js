@@ -373,3 +373,27 @@ date2.addEventListener('input', (e) => {
  boutonRecherche2.addEventListener('click', () => {
      searchJourneys2()
  })
+
+
+ // Exemple avec des données d'API SNCF
+// async function loadSNCFData() {
+//     const response = await fetch('https://api.sncf.com/v1/coverage/sncf/stop_areas');
+//     const data = await response.json();
+    
+//     data.stop_areas.forEach(stop => {
+//       L.marker([stop.coord.lat, stop.coord.lon])
+//         .addTo(map)
+//         .bindPopup(stop.name);
+//     });
+//   }
+  
+//   loadSNCFData();
+
+
+
+// function addGare(lat, lng, nom) {
+//     L.marker([lat, lng])
+//      .addTo(map)
+//      .bindPopup(nom)
+//      .openPopup();
+//   }
