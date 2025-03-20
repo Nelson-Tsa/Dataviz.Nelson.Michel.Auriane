@@ -17,7 +17,8 @@ const arrivalRadio = document.getElementById('arrivalSearch');
 const departureBlock = document.getElementById('departureBlock');
 const arrivalBlock = document.getElementById('arrivalBlock');
 
-
+const ligneItineraire = document.querySelector('.itineraire');
+const logoTGV = document.getElementById('icon-tgv')
 
 let codeInseeArriver 
 let codeInseeDepart 
@@ -235,7 +236,6 @@ async function searchJourneys() {
                 let arrivalTime = formatTime(itinerary[i].arrival_date_time)
     
                 ligneItineraire.innerHTML = ``
-                ligneItineraire.innerHTML = `${departureTime} > ${arrivalTime} `
                 
                 switch (ITINERARY_TYPE) {
                     
@@ -263,7 +263,9 @@ async function searchJourneys() {
                     default :
                         console.log("autre type")
                 }
-    
+                
+                ligneItineraire.appendChild = `${departureTime} > ${logoTGV} > ${arrivalTime} `
+
             }
     
         }
