@@ -12,6 +12,13 @@ const date2 = document.getElementById('date2');
 const heureArriver = document.getElementById('time2');
 
 
+const departureRadio = document.getElementById('departureSearch');
+const arrivalRadio = document.getElementById('arrivalSearch');
+const departureBlock = document.getElementById('departureBlock');
+const arrivalBlock = document.getElementById('arrivalBlock');
+
+
+
 let codeInseeArriver 
 let codeInseeDepart 
 let dateDepart 
@@ -20,6 +27,29 @@ let timeStart
 
 let dateArriver
 let timeEnd
+
+
+// Initialisation de l'interface
+window.addEventListener('DOMContentLoaded', () => {
+    // Par défaut, afficher le bloc de recherche par départ et cacher le bloc de recherche par arrivée
+    departureBlock.style.display = 'block';
+    arrivalBlock.style.display = 'none';
+});
+
+// Gestion des boutons radio pour changer le type de recherche
+departureRadio.addEventListener('change', () => {
+    if (departureRadio.checked) {
+        departureBlock.style.display = 'block';
+        arrivalBlock.style.display = 'none';
+    }
+});
+
+arrivalRadio.addEventListener('change', () => {
+    if (arrivalRadio.checked) {
+        departureBlock.style.display = 'none';
+        arrivalBlock.style.display = 'block';
+    }
+});
 
 //---------------------Ville Depart---------------------
 
