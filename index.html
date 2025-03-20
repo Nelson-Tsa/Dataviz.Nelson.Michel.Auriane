@@ -8,50 +8,39 @@
 
 </head>
 <body>
-    <div class="autocomplete">
-        <input type="text" 
-               id="cityInput" 
-               placeholder="Départ"
-               autocomplete="off">
-        <div id="loading">Recherche en cours...</div>
-        <div id="results" ></div>
-    </div>
-    <div class="autocomplete2">
-        <input type="text" id="villeArriver" placeholder="Arrivée" autocomplete="off">
-        <div id="loading2">Recherche en cours...</div>
-        <div id="results2"></div>
-    </div>
+<div class="container">
+    <h1>Planifiez votre trajet en train</h1>
 
-<div id="form">
-    <div id="date">
-        <label for="dateForm">Date départ</label>
-        <input type="date" id="date">
-        
-    </div>
-    <div id="time">
-        <label for="timeForm">Heure départ</label>
-        <input type="time" id="time">
-    </div>
-    <div id="Recherche">
-    <button id="rechercheDepart">Rechercher</button>
-    </div>
-</div>
+        <div class="autocomplete-container">
+            <div class="autocomplete1"><h2>Gare de départ</h2>
+                <input type="text" id="cityInput" placeholder="Gare de départ" autocomplete="off">
+                <div id="loading">Recherche en cours...</div>
+                <div id="results"></div>
+            </div>
+            <div class="autocomplete2"><h2>Gare de départ</h2>
+                <input type="text" id="villeArriver" placeholder="Gare d'arrivée" autocomplete="off">
+                <div id="loading2">Recherche en cours...</div>
+                <div id="results2"></div>
+            </div>
+        </div>
 
-<div id="form2" >
-    <div id="dateArrivée">
-        <label for="dateForm">Date Arrivée</label>
-        <input type="date" id="date2">
-        
-    </div >
-    <div id="time">
-        <label for="timeForm">Heure Arrivée</label>
-        <input type="time" id="time2">
-    </div>
-    <div id="RechercheA">
-    <button id="RechercheArrivee">Rechercher</button>
-    </div>
-</div>
-    
+        <div class="dateHeure">
+            <div class="dateDepart" id="form">
+                <div id="date">
+                    <label for="dateForm">Date départ</label>
+                    <input type="date" id="date">
+                </div>
+            </div>
+            <div id="time">
+                <label for="timeForm">Heure départ</label>
+                <input type="time" id="time">
+            </div>
+        </div>
+
+        <div id="Recherche">
+            <button id="rechercheDepart">Rechercher</button>
+        </div>
+</div> 
 
     <section id="Trajet">
         <div>
@@ -70,6 +59,10 @@
             <div id="tempsMarche"></div>
         </div>
     </section>
-    
+
+    <div class="container-right">
+        <h2>Carte de la France</h2>
+    </div>
+
 </body>
 </html>

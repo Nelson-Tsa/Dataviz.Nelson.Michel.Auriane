@@ -167,7 +167,7 @@ date.addEventListener('input', (e) => {
     console.log(dateDepart)
 });
 
-time.addEventListener('input', (e) => {
+heureDepart.addEventListener('input', (e) => {
     const heureDepartChoix = e.target.value.split(':').join('').trim();
     timeStart = `${heureDepartChoix}00`
     console.log(timeStart)
@@ -183,16 +183,78 @@ async function searchJourneys() {
     try {
         const apiDepart = `https://api.navitia.io/v1/coverage/sncf/journeys?to=${codeInseeArriver}&from=${codeInseeDepart}&datetime_represents=departure&datetime=${dateDepart}T${timeStart}&`
         
-
         const response = await fetch(apiDepart, { headers: { Authorization: apiKey }
-    });
-;
+        });
+        
         const data = await response.json();
-        console.log(data);
+        console.log(data);  // Vérifiez les données dans la console
+
+        const journey = data.journeys
+        console.log(journey)
+        
+        for (y=0 ; y < journey.length ; y++){
+            
+            const itinerary = journey[y].sections
+            console.log(itinerary)
+
+            for (i=0 ; i < itinerary.length ; i++ ) {
+    
+                const ITINERARY_TYPE = itinerary[i].type
+                
+                let departureTime = formatTime(itinerary[i].departure_date_time)
+                let arrivalTime = formatTime(itinerary[i].arrival_date_time)
+    
+                switch (ITINERARY_TYPE) {
+                    
+                    case "public_transport":
+                        let departureName = itinerary[i].from.name
+                        let arrivalName = itinerary[i].to.name
+                        let public_tranport = itinerary[i].display_informations.physical_mode
+    
+                        console.log(departureName)
+                        console.log(departureTime) 
+                        console.log(arrivalName)
+                        console.log(arrivalTime)
+                        console.log(public_tranport)
+                        break
+                    
+                    case "waiting":
+                        console.log(departureTime)
+                        console.log(arrivalTime)
+                        break
+    
+                    case "crow_fly":
+                        console.log("marche")
+                        break
+    
+                    default :
+                        console.log("autre type")
+                }
+    
+            }
+    
+        }
+
+        
     } catch (error) {
         console.error(error);
     }
 }
+
+// sortir du format "YYYYMMDDTHHMMSS" l'information heure en HH:MM
+
+function formatTime(dateArray) {
+    
+    const selectTime = dateArray.split('T')[1];
+    
+    
+    const hours = selectTime.slice(0, 2);
+    const minutes = selectTime.slice(2, 4);
+    
+    
+    return `${hours}:${minutes}`;
+}
+
 
 
 // -----------------------Fonction API arrivée a partir d'une heure----------------------
@@ -210,6 +272,21 @@ https://api.sncf.com/v1/coverage/sncf/journeys?to=${codeInseeArriver}&from=${cod
         console.error(error);
     }
 }
+
+// sortir du format "YYYYMMDDTHHMMSS" l'information heure en HH:MM
+
+function formatTime(dateArray) {
+    
+    const selectTime = dateArray.split('T')[1];
+    
+    
+    const hours = selectTime.slice(0, 2);
+    const minutes = selectTime.slice(2, 4);
+    
+    
+    return `${hours}:${minutes}`;
+}
+
 
 
 date2.addEventListener('input', (e) => {
