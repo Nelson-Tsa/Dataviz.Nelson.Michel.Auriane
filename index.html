@@ -5,9 +5,22 @@
     <title>Recherche Code INSEE</title>
     <link rel="stylesheet" href="style.css">
     <script src="script.js" defer></script>
+
+   <!-- Leaflet CSS -->
+   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+   integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+   crossorigin=""/>
+ <style>
+   #map { 
+     height: 50%;  /* Définir une hauteur obligatoire */
+     width: 40%;
+   }
+ </style>
+
+
     <svg display = "none" id="train" class="icon-tgv" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-train-front"><path d="M8 3.1V7a4 4 0 0 0 8 0V3.1"/><path d="m9 15-1-1"/><path d="m15 15 1-1"/><path d="M9 19c-2.8 0-5-2.2-5-5v-4a8 8 0 0 1 16 0v4c0 2.8-2.2 5-5 5Z"/><path d="m8 19-2 3"/><path d="m16 19 2 3"/></svg>
     <svg display = "none" class="icon-local-train" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-tram-front"><rect width="16" height="16" x="4" y="3" rx="2"/><path d="M4 11h16"/><path d="M12 3v8"/><path d="m8 19-2 3"/><path d="m18 22-2-3"/><path d="M8 15h.01"/><path d="M16 15h.01"/></svg>
-    <img id="icon-tgv" src="Dataviz.Nelson.Michel.Auriane/images/train-front.svg" display = "none">
+    <!-- <img id="icontgv" src="images/train-front.svg" display = "none"> -->
    
 </head>
 <body>
@@ -97,10 +110,45 @@
         </div>
     </section>
 
-    <div class="container-right">
+    <div id="map" class="container-right">
         <h2>Carte de la France</h2>
       
     </div>
+    <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+  integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+  crossorigin=""></script>
+
+
+<!-- Script d'initialisation -->
+
+  <script>
+    // Centrer la carte sur la France avec un zoom adapté
+    const map = L.map('map').setView([46.6031, 2.4469], 6);
+  
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+  
+    // Retirer le marqueur spécifique pour ne garder que la vue globale
+    // (Vous pourrez ajouter des marqueurs plus tard via des coordonnées dynamiques)
+  </script>
+
+<!-- <script>
+  // Initialiser la carte centrée sur Paris
+  const map = L.map('map').setView([48.8566, 2.3522], 13);
+
+  // Ajouter les tuiles OpenStreetMap
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap contributors'
+  }).addTo(map);
+
+  // Exemple : Ajouter un marqueur SNCF
+  L.marker([48.8414, 2.3643])
+    .addTo(map)
+    .bindPopup(`Gare d'Austerlitz`)
+    .openPopup();
+</script> -->
 
 </body>
 </html>
