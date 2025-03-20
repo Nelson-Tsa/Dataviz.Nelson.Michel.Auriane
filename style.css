@@ -1,3 +1,10 @@
+.dateHeure {
+    display: flex;
+    justify-content: space-between;
+}
+
+
+
 * {
     margin: 0;
     padding: 0;
