@@ -18,7 +18,9 @@ const departureBlock = document.getElementById('departureBlock');
 const arrivalBlock = document.getElementById('arrivalBlock');
 
 const ligneItineraire = document.querySelector('.itineraire');
-const logoTGV = document.getElementById('icon-tgv')
+
+// const logoTGV = document.getElementById('train')
+// let iconTGV = () => "<svg src='images/train-front.svg' alt='Icone train grande vitesse' />"
 
 let codeInseeArriver 
 let codeInseeDepart 
@@ -28,6 +30,23 @@ let timeStart
 
 let dateArriver
 let timeEnd
+
+function iconTGV(){
+
+    const logoTGV = document.createElement("svg");
+
+    // Set the src and alt attributes for the image
+    logoTGV.id = "icon-tgv"; // Optional, if you want to reference the image by ID
+    logoTGV.src = "images/train-front.svg";
+    logoTGV.alt = "Icone train grande vitesse";
+
+    return logoTGV
+}
+
+// function iconTGV(){
+//     result = "<svg src='images/train-front.svg' alt='Icone train grande vitesse' />"
+//     return result
+// }
 
 
 // Initialisation de l'interface
@@ -87,6 +106,7 @@ async function searchCity(query) {
         }
 
         // Affiche les résultats
+        ligneItineraire.innerHTML = ``
         resultsDiv.style.display = 'block';
         resultsDiv.innerHTML = cities.map(city => `
             <div class="result-item" 
@@ -212,7 +232,7 @@ boutonRecherche.addEventListener('click', () => {
 const apiKey = 'f3a26e07-0df5-48e8-b17a-b9d05b5a820a'
 async function searchJourneys() {
     try {
-        const apiDepart = `https://api.navitia.io/v1/coverage/sncf/journeys?to=${codeInseeArriver}&from=${codeInseeDepart}&datetime_represents=departure&datetime=${dateDepart}T${timeStart}&`
+        const apiDepart = `https://api.navitia.io/v1/coverage/sncf/journeys?to=${codeInseeArriver}&from=${codeInseeDepart}&datetime_represents=departure&datetime=${dateDepart}T${timeStart}&min_nb_journeys=3&`
         
         const response = await fetch(apiDepart, { headers: { Authorization: apiKey }
         });
@@ -228,16 +248,18 @@ async function searchJourneys() {
             const itinerary = journey[y].sections
             console.log(itinerary)
 
+            let departureTime = formatTime(journey[y].departure_date_time)
+            let arrivalTime = formatTime(journey[y].arrival_date_time)
+
+            let fullItinerary = ''; // Variable pour cumuler/joindre les portions d'itinéraires
+
             for (i=0 ; i < itinerary.length ; i++ ) {
     
-                const ITINERARY_TYPE = itinerary[i].type
+                const itineraryType = itinerary[i].type
                 
-                let departureTime = formatTime(itinerary[i].departure_date_time)
-                let arrivalTime = formatTime(itinerary[i].arrival_date_time)
-    
-                ligneItineraire.innerHTML = ``
-                
-                switch (ITINERARY_TYPE) {
+                let itineraryElement = ''; // Variable pour contenir la chaîne HTML pour chaque portion d'itinéraire
+
+                switch (itineraryType) {
                     
                     case "public_transport":
                         let departureName = itinerary[i].from.name
@@ -249,11 +271,17 @@ async function searchJourneys() {
                         console.log(arrivalName)
                         console.log(arrivalTime)
                         console.log(public_tranport)
+
+                        // Contient la chaîne HTML 
+                        itineraryElement = `${departureName} ${iconTGV()} ${arrivalName} > `;
+                        // itineraryElement = `${departureName} (${departureTime}) > ${iconTGV()} > ${arrivalName} (${arrivalTime})`;
+
                         break
                     
                     case "waiting":
                         console.log(departureTime)
                         console.log(arrivalTime)
+                        // itineraryElement = ` correspondance > `
                         break
     
                     case "crow_fly":
@@ -263,11 +291,18 @@ async function searchJourneys() {
                     default :
                         console.log("autre type")
                 }
-                
-                ligneItineraire.appendChild = `${departureTime} > ${logoTGV} > ${arrivalTime} `
 
+                // Joint la portion d'itinéraire au fullItinerary
+                fullItinerary += `<span>${itineraryElement}</span>`;
+
+                console.log(itineraryElement);
+                
             }
-    
+            
+            if (ligneItineraire) {
+                ligneItineraire.innerHTML += `<div>${departureTime} >> ${fullItinerary}> ${arrivalTime}</div>`;
+            }
+
         }
 
         
@@ -289,8 +324,6 @@ function formatTime(dateArray) {
     
     return `${hours}:${minutes}`;
 }
-
-
 
 // -----------------------Fonction API arrivée a partir d'une heure----------------------
 
