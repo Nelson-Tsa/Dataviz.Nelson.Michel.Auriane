@@ -3,7 +3,7 @@
     justify-content: space-between;
 }
 
-
+#map { height: 180px; }
 
 * {
     margin: 0;
@@ -138,6 +138,16 @@ h1 {
     transition: background-color 0.3s, transform 0.3s;
 }
 
+#RechercheArrivee {
+    font-family: 'Poppins', sans-serif;
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 20px;
+    margin-top: 20px;
+    transition: background-color 0.3s, transform 0.3s;
+}
 /* Conteneur pour l'affichage du trajet */
 #Trajet {
     background-color: rgb(249, 255, 240);
@@ -162,8 +172,8 @@ h1 {
     background-color: rgb(249, 255, 240);
     border-radius: 12px;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 1);
-    width: 600px;
-    height: 600px;
+    width: 180px;
+    height: 180px;
     z-index: 1;
     text-align: center;
     display: flex;
