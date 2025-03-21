@@ -19,8 +19,10 @@ const arrivalBlock = document.getElementById('arrivalBlock');
 
 const ligneItineraire = document.querySelector('.itineraire');
 
-// const logoTGV = document.getElementById('train')
-// let iconTGV = () => "<svg src='images/train-front.svg' alt='Icone train grande vitesse' />"
+// affichage des icônes de transport dans la ligne itinéraire
+let iconTGV = () => "<img id='icon-tgv' src='images/tgv-front.svg' alt='Icone train grande vitesse' />";
+let iconTMD = () => "<img id='icon-TMD' src='images/ter-front.svg' alt='Icone train moyenne distance' />";
+let iconBus = () => "<img id='icon-bus' src='images/bus-front.svg' alt='Icone autocar' />";
 
 let codeInseeArriver 
 let codeInseeDepart 
@@ -30,24 +32,6 @@ let timeStart
 
 let dateArriver
 let timeEnd
-
-function iconTGV(){
-
-    const logoTGV = document.createElement("svg");
-
-    // Set the src and alt attributes for the image
-    logoTGV.id = "icon-tgv"; // Optional, if you want to reference the image by ID
-    logoTGV.src = "images/train-front.svg";
-    logoTGV.alt = "Icone train grande vitesse";
-
-    return logoTGV
-}
-
-// function iconTGV(){
-//     result = "<svg src='images/train-front.svg' alt='Icone train grande vitesse' />"
-//     return result
-// }
-
 
 // Initialisation de l'interface
 window.addEventListener('DOMContentLoaded', () => {
@@ -256,25 +240,31 @@ async function searchJourneys() {
             for (i=0 ; i < itinerary.length ; i++ ) {
     
                 const itineraryType = itinerary[i].type
-                
                 let itineraryElement = ''; // Variable pour contenir la chaîne HTML pour chaque portion d'itinéraire
 
+                // Fonction pour extraire uniquement le nom de la ville sans la région entre parenthèses
+                const getCityName = (location) => {
+                    return location.name.split(' (')[0]; 
+                };
+            
                 switch (itineraryType) {
                     
                     case "public_transport":
-                        let departureName = itinerary[i].from.name
-                        let arrivalName = itinerary[i].to.name
+                        let departureName = getCityName(itinerary[i].from);
+                        let arrivalName = getCityName(itinerary[i].to);
                         let public_tranport = itinerary[i].display_informations.physical_mode
     
-                        console.log(departureName)
-                        console.log(departureTime) 
-                        console.log(arrivalName)
-                        console.log(arrivalTime)
+                        console.log(`${departureName} (${departureTime})`)
+                        console.log(`${arrivalName} (${arrivalTime})`)
                         console.log(public_tranport)
-
-                        // Contient la chaîne HTML 
-                        itineraryElement = `${departureName} ${iconTGV()} ${arrivalName} > `;
-                        // itineraryElement = `${departureName} (${departureTime}) > ${iconTGV()} > ${arrivalName} (${arrivalTime})`;
+                        
+                        if (public_tranport === "Train grande vitesse"){
+                            itineraryElement = `${departureName} ${iconTGV()} ${arrivalName} > `;
+                        } else if (public_tranport === "TER / Intercités"){
+                            itineraryElement = `${departureName} ${iconTMD()} ${arrivalName} > `;
+                        } else if (public_tranport === "Autocar"){
+                            itineraryElement = `${departureName} ${iconBus()} ${arrivalName} > `;
+                        } else                         
 
                         break
                     
