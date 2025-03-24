@@ -1,5 +1,5 @@
 const input = document.getElementById('cityInput');
-const inputArriver = document.getElementById('villeArrivee');
+const inputArriver = document.getElementById('villeArriver');
 const resultsDiv = document.getElementById('results');
 const resultsDiv2 = document.getElementById('results2');
 const loadingDiv = document.getElementById('loading');
@@ -125,7 +125,7 @@ async function searchCity(query) {
 
 
 //---------------------Ville Arrivée---------------------
-villeArrivee.addEventListener('input', (e) => {
+villeArriver.addEventListener('input', (e) => {
     clearTimeout(timeoutId);
     const villeData = e.target.value.trim();
     
