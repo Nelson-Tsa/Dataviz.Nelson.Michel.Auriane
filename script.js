@@ -210,6 +210,7 @@ heureDepart.addEventListener('input', (e) => {
 
 
 boutonRecherche.addEventListener('click', () => {
+    clearMarkers()
     searchJourneys()
 })
 
@@ -238,13 +239,21 @@ async function searchJourneys() {
             const departureCoords = departureSection?.from?.stop_point?.coord || {};
             
             // Coordonnées d'arrivée (dernière section de transport)
-            const arrivalSection = itinerary.findLast(s => s.type === 'public_transport');
+            // const arrivalSection = itinerary.findLast(s => s.type === 'public_transport');
+            const arrivalSection = itinerary.find(s => s.type === 'public_transport');
             const arrivalCoords = arrivalSection?.to?.stop_point?.coord || {};
 
-            departLatitude = departureCoords.lat
-            departLongitude = departureCoords.lon
-            arriveeLatitude = arrivalCoords.lat
-            arriveeLongitude = arrivalCoords.lon
+             // Nom des gares de départ et d'arrivée
+             const departureName1 = departureSection?.from?.stop_point?.name || '';
+             const arrivalName1 = arrivalSection?.to?.stop_point?.name || '';
+ 
+             departLatitude = departureCoords.lat
+             departLongitude = departureCoords.lon
+             arriveeLatitude = arrivalCoords.lat
+             arriveeLongitude = arrivalCoords.lon
+ 
+             addGareDepart(departLatitude, departLongitude, departureName1)
+             addGareArriver(arriveeLatitude, arriveeLongitude, arrivalName1)
             
             // ------ Fin de récupération de latitude et longitude ------------
 
@@ -276,9 +285,9 @@ async function searchJourneys() {
                         // // console.log(`${arrivalName} (${arrivalTime})`)
                         // // console.log(public_tranport)
 
-                        // --Ajout des gares de depart et d'arriver sur la carte--
-                        addGareDepart(departLatitude, departLongitude, departureName)
-                        addGareArriver(arriveeLatitude, arriveeLongitude, arrivalName)
+                        // --Ajout des gares de depart et d'arriver sur la carte--  Remplacer plus haut pour obtenir les bon noms de gare
+                        // addGareDepart(departLatitude, departLongitude, departureName)
+                        // addGareArriver(arriveeLatitude, arriveeLongitude, arrivalName)
                         // --Fin de l'ajout des gares de depart et d'arriver sur la carte--
                        
                         currentCity = getCityName(itinerary[i].from); // Ville de départ
@@ -424,3 +433,11 @@ function addGareDepart(lat, lng, nom) {
      .bindPopup(nom)
      .openPopup();
   }
+
+  function clearMarkers() {
+    map.eachLayer(function (layer) {
+        if (layer instanceof L.Marker) {
+            map.removeLayer(layer);
+        }
+    });
+}
