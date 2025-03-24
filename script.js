@@ -225,7 +225,7 @@ async function searchJourneys() {
         console.log(data);  // Vérifiez les données dans la console
 
         const journey = data.journeys
-        //console.log(journey)
+        // console.log(journey)
         
         for (y=0 ; y < journey.length ; y++){
             
@@ -269,8 +269,7 @@ async function searchJourneys() {
                 switch (itineraryType) {
                     
                     case "public_transport":
-                        // let departureName = getCityName(itinerary[i].from);
-                        // let arrivalName = getCityName(itinerary[i].to);
+                        
                         let public_tranport = itinerary[i].display_informations.physical_mode
 
                         // // console.log(`${departureName} (${departureTime})`)
@@ -287,9 +286,14 @@ async function searchJourneys() {
                             visitedCities.push(currentCity); // Ajouter si non déjà ajouté
                             journeySteps.push(currentCity); // Ajouter à l'itinéraire
                         }
+                        currentCity = getCityName(itinerary[i].to); // Ville d'arrivée
+                        if (!visitedCities.includes(currentCity)) {
+                            visitedCities.push(currentCity); // Ajouter si non déjà ajouté
+                            journeySteps.push(currentCity); // Ajouter à l'itinéraire
+                        }
                     
-                        // Ajout du transport TGV
-                        itineraryElement = `${iconTGV()}`;
+                        // Ajout de l'icone de transport
+                        // itineraryElement = `${iconTGV()}`;
                         if (public_tranport === "Train grande vitesse"){
                             itineraryElement = `${iconTGV()}`;
                         } else if (public_tranport === "TER / Intercités"){
@@ -297,14 +301,6 @@ async function searchJourneys() {
                         } else if (public_tranport === "Autocar"){
                             itineraryElement = `${iconBus()}`
                         } else 
-
-                        // if (public_tranport === "Train grande vitesse"){
-                        //     itineraryElement = `${departureName} ${iconTGV()} ${arrivalName} > `;
-                        // } else if (public_tranport === "TER / Intercités"){
-                        //     itineraryElement = `${departureName} ${iconTMD()} ${arrivalName} > `;
-                        // } else if (public_tranport === "Autocar"){
-                        //     itineraryElement = `${departureName} ${iconBus()} ${arrivalName} > `;
-                        // } else 
 
                         break
                     
@@ -326,7 +322,7 @@ async function searchJourneys() {
                 // fullItinerary += `<span>${itineraryElement}</span>`;
 
                 // Si l'étape est un transport ou une ville qui n'a pas été ajoutée, on l'ajoute
-                fullItinerary += `${journeySteps.join(' > ')} ${itineraryElement} > `;
+                fullItinerary = `${journeySteps.join(' > ')} ${itineraryElement} > `;
                 
                 // if (itineraryElement !== "Correspondance") {
                 //     fullItinerary += `${journeySteps.join(' > ')} ${itineraryElement} > `;
@@ -338,7 +334,7 @@ async function searchJourneys() {
             
             
             if (ligneItineraire) {
-                ligneItineraire.innerHTML += `<div>${departureTime} > ${fullItinerary}> ${arrivalTime}</div>`;
+                ligneItineraire.innerHTML += `<div>${departureTime} > ${fullItinerary} ${arrivalTime}</div>`;
             }
 
         }
