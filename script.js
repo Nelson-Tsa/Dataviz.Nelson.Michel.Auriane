@@ -210,6 +210,7 @@ heureDepart.addEventListener('input', (e) => {
 
 
 boutonRecherche.addEventListener('click', () => {
+    clearMarkers()
     searchJourneys()
 })
 
@@ -238,13 +239,16 @@ async function searchJourneys() {
             const departureCoords = departureSection?.from?.stop_point?.coord || {};
             
             // Coordonnées d'arrivée (dernière section de transport)
-            const arrivalSection = itinerary.findLast(s => s.type === 'public_transport');
+            // const arrivalSection = itinerary.findLast(s => s.type === 'public_transport');
+            const arrivalSection = itinerary.find(s => s.type === 'public_transport');
             const arrivalCoords = arrivalSection?.to?.stop_point?.coord || {};
 
             departLatitude = departureCoords.lat
             departLongitude = departureCoords.lon
             arriveeLatitude = arrivalCoords.lat
             arriveeLongitude = arrivalCoords.lon
+
+            
             
             // ------ Fin de récupération de latitude et longitude ------------
 
@@ -278,7 +282,7 @@ async function searchJourneys() {
                         addGareDepart(departLatitude, departLongitude, departureName)
                         addGareArriver(arriveeLatitude, arriveeLongitude, arrivalName)
                         // --Fin de l'ajout des gares de depart et d'arriver sur la carte--
-                        
+                          
                         if (public_tranport === "Train grande vitesse"){
                             itineraryElement = `${departureName} ${iconTGV()} ${arrivalName} > `;
                         } else if (public_tranport === "TER / Intercités"){
@@ -401,3 +405,11 @@ function addGareDepart(lat, lng, nom) {
      .bindPopup(nom)
      .openPopup();
   }
+
+  function clearMarkers() {
+    map.eachLayer(function (layer) {
+        if (layer instanceof L.Marker) {
+            map.removeLayer(layer);
+        }
+    });
+}
