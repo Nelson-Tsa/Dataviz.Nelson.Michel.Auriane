@@ -43,7 +43,7 @@ h1 {
     border-radius: 8px;
 }
 
-#cityInput, #villeArriver {
+#cityInput, #villeArrivee {
     font-family: 'Poppins', sans-serif;
     text-align: center;
     border: 2px solid #666;
@@ -57,7 +57,7 @@ h1 {
     transition: border-color 0.3s, box-shadow 0.3s;
 }
 
-#cityInput:focus, #villeArriver:focus {
+#cityInput:focus, #villeArrivee:focus {
     border-color: #1c7ee7;
     outline: none;
     box-shadow: 0 0 5px rgba(28, 126, 231, 0.5);
