@@ -225,12 +225,28 @@ async function searchJourneys() {
         console.log(data);  // Vérifiez les données dans la console
 
         const journey = data.journeys
-        console.log(journey)
+        //console.log(journey)
         
         for (y=0 ; y < journey.length ; y++){
             
             const itinerary = journey[y].sections
-            console.log(itinerary)
+            // console.log(itinerary)
+
+             // --------- Récupération latitude et longitude ------------
+            // Coordonnées de départ (section 1)
+            const departureSection = itinerary[1];
+            const departureCoords = departureSection?.from?.stop_point?.coord || {};
+            
+            // Coordonnées d'arrivée (dernière section de transport)
+            const arrivalSection = itinerary.findLast(s => s.type === 'public_transport');
+            const arrivalCoords = arrivalSection?.to?.stop_point?.coord || {};
+
+            departLatitude = departureCoords.lat
+            departLongitude = departureCoords.lon
+            arriveeLatitude = arrivalCoords.lat
+            arriveeLongitude = arrivalCoords.lon
+            
+            // ------ Fin de récupération de latitude et longitude ------------
 
             let departureTime = formatTime(journey[y].departure_date_time)
             let arrivalTime = formatTime(journey[y].arrival_date_time)
@@ -253,10 +269,15 @@ async function searchJourneys() {
                         let departureName = getCityName(itinerary[i].from);
                         let arrivalName = getCityName(itinerary[i].to);
                         let public_tranport = itinerary[i].display_informations.physical_mode
-    
-                        console.log(`${departureName} (${departureTime})`)
-                        console.log(`${arrivalName} (${arrivalTime})`)
-                        console.log(public_tranport)
+
+                        // console.log(`${departureName} (${departureTime})`)
+                        // console.log(`${arrivalName} (${arrivalTime})`)
+                        // console.log(public_tranport)
+
+                        // --Ajout des gares de depart et d'arriver sur la carte--
+                        addGareDepart(departLatitude, departLongitude, departureName)
+                        addGareArriver(arriveeLatitude, arriveeLongitude, arrivalName)
+                        // --Fin de l'ajout des gares de depart et d'arriver sur la carte--
                         
                         if (public_tranport === "Train grande vitesse"){
                             itineraryElement = `${departureName} ${iconTGV()} ${arrivalName} > `;
@@ -269,23 +290,23 @@ async function searchJourneys() {
                         break
                     
                     case "waiting":
-                        console.log(departureTime)
-                        console.log(arrivalTime)
+                        // console.log(departureTime)
+                        // console.log(arrivalTime)
                         // itineraryElement = ` correspondance > `
                         break
     
                     case "crow_fly":
-                        console.log("marche")
+                        // console.log("marche")
                         break
     
                     default :
-                        console.log("autre type")
+                        // console.log("autre type")
                 }
 
                 // Joint la portion d'itinéraire au fullItinerary
                 fullItinerary += `<span>${itineraryElement}</span>`;
 
-                console.log(itineraryElement);
+                // console.log(itineraryElement);
                 
             }
             
@@ -365,25 +386,18 @@ date2.addEventListener('input', (e) => {
  })
 
 
- // Exemple avec des données d'API SNCF
-// async function loadSNCFData() {
-//     const response = await fetch('https://api.sncf.com/v1/coverage/sncf/stop_areas');
-//     const data = await response.json();
-    
-//     data.stop_areas.forEach(stop => {
-//       L.marker([stop.coord.lat, stop.coord.lon])
-//         .addTo(map)
-//         .bindPopup(stop.name);
-//     });
-//   }
-  
-//   loadSNCFData();
+// ---Fonction qui ajoute des marqueurs sur la carte---
 
 
-
-// function addGare(lat, lng, nom) {
-//     L.marker([lat, lng])
-//      .addTo(map)
-//      .bindPopup(nom)
-//      .openPopup();
-//   }
+function addGareDepart(lat, lng, nom) {
+    L.marker([lat, lng])
+     .addTo(map)
+     .bindPopup(nom)
+     .openPopup();
+  }
+  function addGareArriver(lat, lng, nom) {
+    L.marker([lat, lng])
+     .addTo(map)
+     .bindPopup(nom)
+     .openPopup();
+  }
