@@ -1,11 +1,10 @@
-
 #map { 
     height: 400px;
     width: 100%;
     margin-right: 5px;
     flex-wrap: wrap;
     flex: 1;
-    min-width: 400px;
+    min-width: 350px;
  }
  
  #container-gauche {
@@ -44,7 +43,7 @@
 
  #container-historique , #colonne-map {
     flex: 1;
-    min-width: 400px;
+    min-width: 350px;
  }
  #container-historique {
     margin-right: 5px;
@@ -57,7 +56,7 @@
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
     width: 100%;
     text-align: center;
-    
+    min-width: 350px;
 }
 
 
@@ -275,3 +274,47 @@ h1 {
     margin-bottom: 80px;
 }
 
+/* Styles responsives pour les appareils mobiles */
+@media screen and (max-width: 768px) {
+    /* Conteneurs principaux en colonne */
+    #container-gauche, 
+    #container-droite
+     {
+        flex-direction: column;
+    }
+    
+    /* Champs de recherche en colonne */
+    .autocomplete-container{
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    /* Ajustement des largeurs pour occuper toute la largeur disponible */
+    .container,
+    #map,
+    #container-historique,
+    .autocomplete1, 
+    .autocomplete2,
+    #colonne-map, 
+    #colonne-recherche,
+    #Trajet,
+    #container-right{
+        min-width: 100%;
+        margin-right: 0;
+    }
+    
+    /* Ajustement des marges */
+    .container, 
+    #Trajet, 
+    .container-right {
+        margin-bottom: 15px;
+    }
+    
+    /* Ajustement de la taille des boutons */
+    #rechercheDepart,
+    #RechercheArrivee,
+    #supprimerHistorique {
+        width: 100%;
+    }
+
+}
