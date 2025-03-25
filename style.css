@@ -16,6 +16,7 @@
     margin-bottom: 20px;
     justify-content: space-between;
     flex: 1;
+    max-height: 50%;
  }
 
  #colonne-recherche{
@@ -47,6 +48,7 @@
  }
  #container-historique {
     margin-right: 5px;
+    position: relative;
  }
  .container-right {
     background-color: rgb(249, 255, 240);
@@ -241,3 +243,35 @@ h1 {
 .itineraire{
     text-align: left;
 }
+
+#supprimerHistorique {
+    font-family: 'Poppins', sans-serif;
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 20px;
+    margin-top: 20px;
+    transition: background-color 0.3s, transform 0.3s;
+   position: absolute;
+   bottom: 0;
+   left: 50%;
+   transform: translateX(-50%);
+   min-width: 300px;
+   /* max-width: 220px; */
+   max-height: 40px; 
+  
+   
+   margin-top: 10px;
+   margin-bottom: 20px;
+   
+}
+
+.h2-Arriver{
+    margin-bottom: 10px;
+}
+
+#historique-de-arriver{
+    margin-bottom: 80px;
+}
+

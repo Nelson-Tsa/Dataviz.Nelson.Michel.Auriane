@@ -54,7 +54,7 @@ function afficherHistoriqueDepart(){
         tableauHistoriqueDepart = JSON.parse(historiqueD); 
     }
     const titre = document.createElement('h2');
-    titre.textContent = 'Historique des trajets de Départ';
+    titre.textContent = '';
     document.querySelector('#historique-de-depart').appendChild(titre);
     tableauHistoriqueDepart.forEach(historiqueDepart => {
        document.querySelector('#historique-de-depart').innerHTML += 
@@ -71,7 +71,7 @@ function afficherHistoriqueArriver(){
         tableauHistoriqueArriver = JSON.parse(historiqueA); 
     }
     const titre = document.createElement('h2');
-    titre.textContent = 'Historique des trajets d\'Arrivée';
+    titre.textContent = '';
     document.querySelector('#historique-de-arriver').appendChild(titre);
     tableauHistoriqueArriver.forEach(historiqueArriver => {
        document.querySelector('#historique-de-arriver').innerHTML += 
@@ -88,12 +88,12 @@ function ajouterTrajetHistoriqueDepart(villeDepart, villeArriver, heureDepart, d
        </div>`;
     histDepart.appendChild(nouveauHistorique);
     StockageHistoriqueDepart(villeDepart, villeArriver, heureDepart, dateDepart);
-    console.log("coucou")
+    // console.log("coucou")
 }
 
 function ajouterTrajetHistoriqueArriver(villeDepart, villeArriver, heureArriver, dateArriver) {
     const nouveauHistorique = document.createElement('div');
-    nouveauHistorique.innerHTML = `<div class="HistoriqueArriver">
+    nouveauHistorique.innerHTML += `<div class="HistoriqueArriver">
        <p class="ville-depart">${villeDepart} > ${villeArriver} le ${dateArriver} à ${heureArriver}</p>
        </div>`;
     histArriver.appendChild(nouveauHistorique);
