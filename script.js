@@ -12,12 +12,101 @@ const date2 = document.getElementById('date2');
 const heureArriver = document.getElementById('time2');
 
 
+
 const departureRadio = document.getElementById('departureSearch');
 const arrivalRadio = document.getElementById('arrivalSearch');
 const departureBlock = document.getElementById('departureBlock');
 const arrivalBlock = document.getElementById('arrivalBlock');
 
 const ligneItineraire = document.querySelector('.itineraire');
+
+// --- historique ----
+const bouttonHistorique = document.getElementById('supprimerHistorique');
+const histDepart = document.getElementById('historique-de-depart');
+const histArriver = document.getElementById('historique-de-arriver');
+let NomvilleDepart 
+let NomvilleArriver
+
+let tableauHistoriqueDepart = []
+let tableauHistoriqueArriver = []
+
+function viderHistorique(){
+    localStorage.clear();
+    location.reload();
+}
+
+
+
+function StockageHistoriqueDepart(villeDepart, villeArriver, heureDepart, dateDepart) {
+    tableauHistoriqueDepart.push({villeDepart, villeArriver, heureDepart, dateDepart});
+    localStorage.setItem('historiqueDepart', JSON.stringify(tableauHistoriqueDepart));
+}
+
+
+function StockageHistoriqueArriver(villeDepart, villeArriver, heureArriver, dateArriver) {
+    tableauHistoriqueArriver.push({villeDepart, villeArriver, heureArriver, dateArriver});
+    localStorage.setItem('historiqueArriver', JSON.stringify(tableauHistoriqueArriver));
+}
+
+function afficherHistoriqueDepart(){
+    const historiqueD = localStorage.getItem('historiqueDepart');
+    if(historiqueD){
+        tableauHistoriqueDepart = JSON.parse(historiqueD); 
+    }
+    const titre = document.createElement('h2');
+    titre.textContent = 'Historique des trajets de Départ';
+    document.querySelector('#historique-de-depart').appendChild(titre);
+    tableauHistoriqueDepart.forEach(historiqueDepart => {
+       document.querySelector('#historique-de-depart').innerHTML += 
+       `<div class="HistoriqueDepart">
+       <p class="ville-depart">${historiqueDepart.villeDepart} > ${historiqueDepart.villeArriver} le ${historiqueDepart.dateDepart} à ${historiqueDepart.heureDepart}</p>
+       </div>`;
+    });
+}
+
+
+function afficherHistoriqueArriver(){
+    const historiqueA = localStorage.getItem('historiqueArriver');
+    if(historiqueA){
+        tableauHistoriqueArriver = JSON.parse(historiqueA); 
+    }
+    const titre = document.createElement('h2');
+    titre.textContent = 'Historique des trajets d\'Arrivée';
+    document.querySelector('#historique-de-arriver').appendChild(titre);
+    tableauHistoriqueArriver.forEach(historiqueArriver => {
+       document.querySelector('#historique-de-arriver').innerHTML += 
+       `<div class="HistoriqueArriver">
+       <p class="ville-depart">${historiqueArriver.villeDepart} > ${historiqueArriver.villeArriver} le ${historiqueArriver.dateArriver} à ${historiqueArriver.heureArriver}</p>
+       </div>`;
+    });
+}
+
+function ajouterTrajetHistoriqueDepart(villeDepart, villeArriver, heureDepart, dateDepart) {
+    const nouveauHistorique = document.createElement('div');
+    nouveauHistorique.innerHTML = `<div class="HistoriqueDepart">
+       <p class="ville-depart">${villeDepart} > ${villeArriver} le ${dateDepart} à ${heureDepart}</p>
+       </div>`;
+    histDepart.appendChild(nouveauHistorique);
+    StockageHistoriqueDepart(villeDepart, villeArriver, heureDepart, dateDepart);
+    console.log("coucou")
+}
+
+function ajouterTrajetHistoriqueArriver(villeDepart, villeArriver, heureArriver, dateArriver) {
+    const nouveauHistorique = document.createElement('div');
+    nouveauHistorique.innerHTML = `<div class="HistoriqueArriver">
+       <p class="ville-depart">${villeDepart} > ${villeArriver} le ${dateArriver} à ${heureArriver}</p>
+       </div>`;
+    histArriver.appendChild(nouveauHistorique);
+    StockageHistoriqueArriver(villeDepart, villeArriver,heureArriver, dateArriver);
+    console.log("coucou")
+}
+
+bouttonHistorique.addEventListener('click', viderHistorique)
+afficherHistoriqueArriver()
+afficherHistoriqueDepart()
+
+
+// --- fin historique ----
 
 // affichage des icônes de transport dans la ligne itinéraire
 let iconTGV = () => "<img id='icon-tgv' src='images/tgv-front.svg' alt='Icone train grande vitesse' />";
@@ -84,11 +173,13 @@ async function searchCity(query) {
         
         const cities = await response.json();
         
+        
+
         if (cities.length === 0) {
             resultsDiv.innerHTML = 'Aucun résultat trouvé';
             return;
         }
-
+       
         // Affiche les résultats
         ligneItineraire.innerHTML = ``
         resultsDiv.style.display = 'block';
@@ -97,15 +188,23 @@ async function searchCity(query) {
                  data-code="${city.code}"
                  style="padding: 5px; cursor: pointer; border-bottom: 1px solid #eee;">
                 ${city.nom} (CP: ${city.codesPostaux[0]}) - INSEE: ${city.code}
-            </div>
+            </div> 
         `).join('');
-
+       
+               
         // Gère le clic sur un résultat
         document.querySelectorAll('.result-item').forEach(item => {
             item.addEventListener('click', () => {
+                
                 input.value = item.textContent.split(' - ')[0].trim();
+               
                 resultsDiv.innerHTML = `${item.dataset.code}`;
                 codeInseeDepart = `admin:fr:${item.dataset.code}`;
+                
+                // --Recuperation du nom de la ville--
+                let pipou = input.value
+                NomvilleDepart = pipou.split('(').shift().trim();
+                
                 console.log(codeInseeDepart)
                 resultsDiv.style.display = 'none';
                 return codeInseeDepart
@@ -171,7 +270,11 @@ async function searchCityArriver(villeData) {
                 
                 inputArriver.value = item2.textContent.split(' - ')[0].trim();
                 resultsDiv2.innerHTML = `${item2.dataset.code}`;
-            
+
+                // --Recuperation du nom de la ville--
+                let pipou2 = inputArriver.value
+                NomvilleArriver = pipou2.split('(').shift().trim();
+                
                 codeInseeArriver = `admin:fr:${item2.dataset.code}`
                 resultsDiv2.style.display = 'none';
                 console.log(codeInseeArriver)
@@ -212,6 +315,8 @@ heureDepart.addEventListener('input', (e) => {
 boutonRecherche.addEventListener('click', () => {
     clearMarkers()
     searchJourneys()
+    StockageHistoriqueDepart(NomvilleDepart, NomvilleArriver, timeStart, dateDepart)
+    ajouterTrajetHistoriqueDepart(NomvilleDepart, NomvilleArriver, timeStart, dateDepart)
 })
 
 const apiKey = 'f3a26e07-0df5-48e8-b17a-b9d05b5a820a'
@@ -245,8 +350,10 @@ async function searchJourneys() {
 
              // Nom des gares de départ et d'arrivée
              const departureName1 = departureSection?.from?.stop_point?.name || '';
+            //  console.log(departureName1)
              const arrivalName1 = arrivalSection?.to?.stop_point?.name || '';
- 
+             console.log(arrivalName1)
+
              departLatitude = departureCoords.lat
              departLongitude = departureCoords.lon
              arriveeLatitude = arrivalCoords.lat
@@ -291,6 +398,7 @@ async function searchJourneys() {
                         // --Fin de l'ajout des gares de depart et d'arriver sur la carte--
                        
                         currentCity = getCityName(itinerary[i].from); // Ville de départ
+                          
                         if (!visitedCities.includes(currentCity)) {
                             visitedCities.push(currentCity); // Ajouter si non déjà ajouté
                             journeySteps.push(currentCity); // Ajouter à l'itinéraire
@@ -415,6 +523,9 @@ date2.addEventListener('input', (e) => {
 
  boutonRecherche2.addEventListener('click', () => {
      searchJourneys2()
+     ajouterTrajetHistoriqueArriver(NomvilleDepart, NomvilleArriver, timeEnd, dateArriver)
+     StockageHistoriqueArriver(NomvilleDepart, NomvilleArriver, timeEnd, dateArriver)
+     clearMarkers()
  })
 
 

@@ -1,9 +1,64 @@
 
 #map { 
     height: 400px;
-   
+    width: 100%;
+    margin-right: 5px;
+    flex-wrap: wrap;
+    flex: 1;
+    min-width: 400px;
  }
  
+ #container-gauche {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    /* gap : 5px; */
+    margin-bottom: 20px;
+    justify-content: space-between;
+    flex: 1;
+ }
+
+ #colonne-recherche{
+    margin-right: 5px;
+    max-width: 745px;
+ }
+
+ #colonne-map, #colonne-recherche {
+    flex: 1;
+    min-width: 300px;
+    justify-content: space-between ;
+    display: flex;
+    flex-wrap: wrap;
+   
+ }
+ #container-droite {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    gap: 20px;
+    justify-content: space-between;
+    min-width: 400px;
+    
+ }
+
+ #container-historique , #colonne-map {
+    flex: 1;
+    min-width: 400px;
+ }
+ #container-historique {
+    margin-right: 5px;
+ }
+ .container-right {
+    background-color: rgb(249, 255, 240);
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    text-align: center;
+    
+}
+
+
 
 * {
     margin: 0;
@@ -30,9 +85,16 @@ body {
     border-radius: 12px;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
     width: 100%;
-    max-width: 800px;
+    max-width: 745px;
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 5px;
+    min-width: 400px;
+    /* gap: 5px; */
+    margin-right: 5px;
+    flex-wrap: wrap;
+    flex: 1;
+    justify-content: space-between;
+    
 }
 
 h1 {
@@ -41,6 +103,7 @@ h1 {
     margin-bottom: 20px;
     padding: 10px;
     border-radius: 8px;
+    align-items: center;
 }
 
 #cityInput, #villeArriver {
@@ -137,9 +200,15 @@ h1 {
     border-radius: 12px;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
     width: 100%;
-    max-width: 800px;
+    max-width: 745px;
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 5px;
+    flex: 1;
+    min-width: 400px;
+    flex-wrap: wrap;
+    margin-right: 5px;
+    /* margin-left: 5px; */
+    
 }
 /* Conteneur à droite pour un autre élément */
 .container-right {
@@ -148,7 +217,7 @@ h1 {
     border-radius: 12px;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
     width: 100%;
-    max-width: 800px;
+    max-width: 745px;
     text-align: center;
     margin-bottom: 20px;
     

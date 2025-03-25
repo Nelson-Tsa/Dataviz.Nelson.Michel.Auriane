@@ -18,9 +18,10 @@
    
 </head>
 <body>
-<div class="container">
     <h1>Planifiez votre trajet en train</h1>
-
+ <div id="container-gauche">  
+    <!-- <div id="colonne-recherche"> -->
+<div class="container">
     <div class="search-type">
         <div class="search-toggle">
             <input type="radio" id="departureSearch" name="searchType" value="departure" checked>
@@ -83,7 +84,7 @@
         </div>
     </div> 
 </div>
-
+    <!-- </div> -->
 
 
     <section id="Trajet">
@@ -103,11 +104,23 @@
             <div id="tempsMarche"></div>
         </div>
     </section>
+ </div>
 
+ </div>
+ <!-- Il faut mettre la div ici pour la colonne recherche -->
+<div id="container-droite">
+    <div id="colonne-map">
     <div id="map" class="container-right">
         <h2>Carte de la France</h2>
       
     </div>
-
+    <div id="container-historique" class="container-right">
+        <h2>Historique des trajets</h2>
+        <div id="historique-de-depart"></div>
+        <div id="historique-de-arriver"></div>
+        <button id="supprimerHistorique">Supprimer Historique</button>
+    </div>
+</div>
+</div>
 </body>
 </html>
