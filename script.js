@@ -471,10 +471,8 @@ function showItinerary(data) {
 function getTransportIcon(transportType) {
     switch (transportType) {
         case "Train grande vitesse":
-            // return `${iconTGV()}`;  // Utilise l'icône TGV
             return iconTGV();  // Utilise l'icône TGV
         case "TER / Intercités":
-            // return `${iconTMD()}`;  // Utilise l'icône TER / Intercités
             return iconTMD();  // Utilise l'icône TER / Intercités
         case "Autocar":
             return `${iconBus()}`;  // Utilise l'icône Autocar
