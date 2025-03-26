@@ -57,9 +57,15 @@ function afficherHistoriqueDepart(){
     titre.textContent = '';
     document.querySelector('#historique-de-depart').appendChild(titre);
     tableauHistoriqueDepart.forEach(historiqueDepart => {
+     let heureCorrect = historiqueDepart.heureDepart.slice(0, 2);
+     let minuteCorrect = historiqueDepart.heureDepart.slice(2, 4);
+     let heureTotalCorrect = `${heureCorrect}:${minuteCorrect}`;
+
+     let dateCorrect = historiqueDepart.dateDepart.replace(/(\d{4})(\d{2})(\d{2})/, '$3/$2/$1');
+     
        document.querySelector('#historique-de-depart').innerHTML += 
        `<div class="HistoriqueDepart">
-       <p class="ville-depart">${historiqueDepart.villeDepart} > ${historiqueDepart.villeArriver} le ${historiqueDepart.dateDepart} à ${historiqueDepart.heureDepart}</p>
+       <p class="ville-depart">${historiqueDepart.villeDepart} > ${historiqueDepart.villeArriver} le ${dateCorrect} à ${heureTotalCorrect}</p>
        </div>`;
     });
 }
@@ -74,31 +80,43 @@ function afficherHistoriqueArriver(){
     titre.textContent = '';
     document.querySelector('#historique-de-arriver').appendChild(titre);
     tableauHistoriqueArriver.forEach(historiqueArriver => {
+        let heureCorrect = historiqueArriver.heureArriver.slice(0, 2);
+     let minuteCorrect = historiqueArriver.heureArriver.slice(2, 4);
+     let heureTotalCorrect = `${heureCorrect}:${minuteCorrect}`;
+     let dateCorrect = historiqueArriver.dateArriver.replace(/(\d{4})(\d{2})(\d{2})/, '$3/$2/$1');
        document.querySelector('#historique-de-arriver').innerHTML += 
        `<div class="HistoriqueArriver">
-       <p class="ville-depart">${historiqueArriver.villeDepart} > ${historiqueArriver.villeArriver} le ${historiqueArriver.dateArriver} à ${historiqueArriver.heureArriver}</p>
+       <p class="ville-depart">${historiqueArriver.villeDepart} > ${historiqueArriver.villeArriver} le ${dateCorrect} à ${heureTotalCorrect}</p>
        </div>`;
     });
 }
 
 function ajouterTrajetHistoriqueDepart(villeDepart, villeArriver, heureDepart, dateDepart) {
     const nouveauHistorique = document.createElement('div');
+    let heureCorrect = heureDepart.slice(0, 2);
+    let minuteCorrect = heureDepart.slice(2, 4);
+    let heureTotalCorrect = `${heureCorrect}:${minuteCorrect}`
+    let dateCorrect = dateDepart.replace(/(\d{4})(\d{2})(\d{2})/, '$3/$2/$1');
     nouveauHistorique.innerHTML = `<div class="HistoriqueDepart">
-       <p class="ville-depart">${villeDepart} > ${villeArriver} le ${dateDepart} à ${heureDepart}</p>
+       <p class="ville-depart">${villeDepart} > ${villeArriver} le ${dateCorrect} à ${heureTotalCorrect}</p>
        </div>`;
     histDepart.appendChild(nouveauHistorique);
-    StockageHistoriqueDepart(villeDepart, villeArriver, heureDepart, dateDepart);
+    // StockageHistoriqueDepart(villeDepart, villeArriver, heureDepart, dateDepart);
     // console.log("coucou")
 }
 
 function ajouterTrajetHistoriqueArriver(villeDepart, villeArriver, heureArriver, dateArriver) {
     const nouveauHistorique = document.createElement('div');
+    let heureCorrect = heureArriver.slice(0, 2);
+     let minuteCorrect = heureArriver.slice(2, 4);
+     let heureTotalCorrect = `${heureCorrect}:${minuteCorrect}`
+     let dateCorrect = dateArriver.replace(/(\d{4})(\d{2})(\d{2})/, '$3/$2/$1');
     nouveauHistorique.innerHTML += `<div class="HistoriqueArriver">
-       <p class="ville-depart">${villeDepart} > ${villeArriver} le ${dateArriver} à ${heureArriver}</p>
+       <p class="ville-depart">${villeDepart} > ${villeArriver} le ${dateCorrect} à ${heureTotalCorrect}</p>
        </div>`;
     histArriver.appendChild(nouveauHistorique);
-    StockageHistoriqueArriver(villeDepart, villeArriver,heureArriver, dateArriver);
-    console.log("coucou")
+     // StockageHistoriqueArriver(villeDepart, villeArriver,heureArriver, dateArriver);
+    // console.log("coucou")
 }
 
 bouttonHistorique.addEventListener('click', viderHistorique)
@@ -127,6 +145,7 @@ window.addEventListener('DOMContentLoaded', () => {
     // Par défaut, afficher le bloc de recherche par départ et cacher le bloc de recherche par arrivée
     departureBlock.style.display = 'block';
     arrivalBlock.style.display = 'none';
+    departureRadio.checked = true;
 });
 
 // Gestion des boutons radio pour changer le type de recherche
