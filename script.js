@@ -349,148 +349,7 @@ async function searchJourneys() {
         const data = await response.json();
         console.log(data);  // Vérifiez les données dans la console
 
-        const journey = data.journeys
-        
-        for (y=0 ; y < journey.length ; y++){
-            
-            const itinerary = journey[y].sections
-            // console.log(itinerary)
-
-             // --------- Récupération latitude et longitude ------------
-            // Coordonnées de départ (section 1)
-            const departureSection = itinerary[1];
-            const departureCoords = departureSection?.from?.stop_point?.coord || {};
-            
-            // Coordonnées d'arrivée (dernière section de transport)
-            // const arrivalSection = itinerary.findLast(s => s.type === 'public_transport');
-            const arrivalSection = itinerary.find(s => s.type === 'public_transport');
-            const arrivalCoords = arrivalSection?.to?.stop_point?.coord || {};
-
-             // Nom des gares de départ et d'arrivée
-             const departureName1 = departureSection?.from?.stop_point?.name || '';
-             const arrivalName1 = arrivalSection?.to?.stop_point?.name || '';
- 
-             departLatitude = departureCoords.lat
-             departLongitude = departureCoords.lon
-             arriveeLatitude = arrivalCoords.lat
-             arriveeLongitude = arrivalCoords.lon
- 
-             addGareDepart(departLatitude, departLongitude, departureName1)
-             addGareArriver(arriveeLatitude, arriveeLongitude, arrivalName1)
-            
-            // ------ Fin de récupération de latitude et longitude ------------
-
-            // ------ Affichage des itinéraires suivant horaire de départ  ------------
-            let departureTime = formatTime(journey[y].departure_date_time)
-            let arrivalTime = formatTime(journey[y].arrival_date_time)
-
-            let fullItinerary = ''; // Variable pour cumuler/joindre les portions d'itinéraires
-            let visitedCities = []; // Track cities to avoid duplication
-            let journeySteps = []; // Store the names of cities as steps
-            
-            // Liste des types de transport valides
-            const validTransportTypes = [
-                "Train grande vitesse", 
-                "TER / Intercités", 
-                "Autocar"
-            ];
-
-            for (i=0 ; i < itinerary.length ; i++ ) {
-    
-                const itineraryType = itinerary[i].type
-                let currentCity = ''; // Variable to hold the current city's name
-                let public_transport = ''; // Variable pour stocker le type de transport
-                
-                // Vérifie si display_informations est défini avant d'accéder à physical_mode
-                if (itinerary[i].display_informations) {
-                    public_transport = itinerary[i].display_informations.physical_mode; // Récupère le type de transport
-                }
-
-                // Fonction pour extraire uniquement le nom de la ville sans la région entre parenthèses
-                const getCityName = (location) => {
-                    return location.name.split(' (')[0]; 
-                };
-                
-                if (itineraryType === 'public_transport' && validTransportTypes.includes(public_transport)) {
-                    
-                    currentCity = getCityName(itinerary[i].from); // Ville de départ
-                    if (!visitedCities.includes(currentCity)) {
-                        visitedCities.push(currentCity); // Ajouter si non déjà ajouté
-                        journeySteps.push(`${getTransportIcon(public_transport)} ${currentCity}`); // Ajouter à l'itinéraire avec l'icône
-                        // journeySteps.push(currentCity); // Ajouter à l'itinéraire
-                    }
-                    currentCity = getCityName(itinerary[i].to); // Ville d'arrivée
-                    if (!visitedCities.includes(currentCity)) {
-                        visitedCities.push(currentCity); // Ajouter si non déjà ajouté
-                        journeySteps.push(`${getTransportIcon(public_transport)} ${currentCity}`); // Ajouter à l'itinéraire avec l'icône
-                    }
-                    
-                }
-
-                // switch (itineraryType) {
-                    
-                //     case "public_transport":
-                        
-                //         public_tranport = itinerary[i].display_informations.physical_mode
-
-                //         // --Ajout des gares de depart et d'arriver sur la carte--  Remplacé plus haut pour obtenir les bon noms de gare
-                //         // addGareDepart(departLatitude, departLongitude, departureName)
-                //         // addGareArriver(arriveeLatitude, arriveeLongitude, arrivalName)
-                //         // --Fin de l'ajout des gares de depart et d'arriver sur la carte--
-
-                //         if (public_tranport === "Train grande vitesse" || public_tranport === "TER / Intercités" || public_tranport === "Autocar") {
-                //             console.log(getTransportIcon(public_transport))
-                            
-                //             currentCity = getCityName(itinerary[i].from); // Ville de départ
-                //             if (!visitedCities.includes(currentCity)) {
-                //                 visitedCities.push(currentCity); // Ajouter si non déjà ajouté
-                //                 journeySteps.push(`${currentCity} ${getTransportIcon(public_transport)}`); // Ajouter à l'itinéraire avec l'icône
-                //                 // journeySteps.push(currentCity); // Ajouter à l'itinéraire
-                //             }
-                //             currentCity = getCityName(itinerary[i].to); // Ville d'arrivée
-                //             if (!visitedCities.includes(currentCity)) {
-                //                 visitedCities.push(currentCity); // Ajouter si non déjà ajouté
-                //                 journeySteps.push(`${currentCity} ${getTransportIcon(public_transport)}`); // Ajouter à l'itinéraire avec l'icône
-                //             }
-
-                //             // // Ajout de l'icone de transport
-                //             // if (public_tranport === "Train grande vitesse"){
-                //             //     itineraryElement = `${iconTGV()}`;
-                //             // } else if (public_tranport === "TER / Intercités"){
-                //             //     itineraryElement = `${iconTMD()}`;
-                //             // } else if (public_tranport === "Autocar"){
-                //             //     itineraryElement = `${iconBus()}`
-                //             // } else {
-                //             //     itineraryElement = ``;
-                //             // }
-                //         }
-                //         break
-                    
-                //     case "waiting":
-                //         // console.log(departureTime)
-                //         // console.log(arrivalTime)
-                //         // itineraryElement = ` correspondance > `
-                //         break
-    
-                //     case "crow_fly":
-                //         // console.log("marche")
-                //         break
-    
-                //     default :
-                //         // console.log("autre type")
-                // }
-
-                // Si l'étape est un transport ou une ville qui n'a pas été ajoutée, on l'ajoute
-                fullItinerary = `${journeySteps.join(' > ')} > `;
-                
-            }
-             
-            if (ligneItineraire) {
-                ligneItineraire.innerHTML += `<div>${departureTime} > ${fullItinerary} ${arrivalTime}</div>`;
-            }
-            // ------ Fin d'affichage des itinéraires suivant horaire de départ  ------------
-
-        }
+        showItinerary(data); // Appelle la fonction pour afficher les itinéraires        
         
     } catch (error) {
         console.error(error);
@@ -509,7 +368,16 @@ https://api.sncf.com/v1/coverage/sncf/journeys?to=${codeInseeArriver}&from=${cod
         const data2 = await response2.json();
         console.log(data2);
 
-        const journey = data2.journeys
+        showItinerary(data2); // Appelle la fonction pour afficher les itinéraires
+
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+function showItinerary(data) {
+
+    const journey = data.journeys
         
         for (y=0 ; y < journey.length ; y++){
             
@@ -595,13 +463,8 @@ https://api.sncf.com/v1/coverage/sncf/journeys?to=${codeInseeArriver}&from=${cod
             if (ligneItineraire) {
                 ligneItineraire.innerHTML += `<div>${departureTime} > ${fullItinerary} ${arrivalTime}</div>`;
             }
-            // ------ Fin d'affichage des itinéraires suivant horaire de départ  ------------
 
         }
-
-    } catch (error) {
-        console.error(error);
-    }
 }
 
 // Fonction pour obtenir l'icône du transport en fonction du type
